@@ -2,9 +2,9 @@
 
 namespace GustavoVasquez\LaravelQuickLogin;
 
+use GustavoVasquez\LaravelQuickLogin\Components\Form;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use GustavoVasquez\LaravelQuickLogin\Commands\LaravelQuickLoginCommand;
 
 class LaravelQuickLoginServiceProvider extends PackageServiceProvider
 {
@@ -18,8 +18,8 @@ class LaravelQuickLoginServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-quick-login')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel_quick_login_table')
-            ->hasCommand(LaravelQuickLoginCommand::class);
+            ->hasViews('josegus')
+            ->hasViewComponents('josegus', Form::class)
+            ->hasRoute('quick-login');
     }
 }

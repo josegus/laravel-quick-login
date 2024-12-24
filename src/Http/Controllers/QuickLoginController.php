@@ -5,23 +5,51 @@ namespace GustavoVasquez\LaravelQuickLogin\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use PHPUnit\Framework\MockObject\Generator\UnknownClassException;
 
 class QuickLoginController
 {
     public function loginAs(Request $request): RedirectResponse
     {
-        $model = config('quick-login.model')::findOrFail($request->post('model_id'));
+        // Check target class existance
 
-        Auth::login($model, true);
+        if (! class_exists($modelClass = config('quick-login.model'))) {
+            throw new UnknownClassException($modelClass);
+        }
+
+        // Validation
+
+        $validated = validator(
+            data: $request->only('model'),
+            rules: [
+                'model' => [
+                    'required',
+                    Rule::exists($modelClass, $key = config('quick-login.model_primary_key'))
+            ]],
+            messages: [
+                'model.exists' => "User with primary key [{$key}] not found."
+            ]
+        )->validate();
+
+        // Login attempt
+
+        $modelInstance = $modelClass::findOrFail($validated['model']);
+
+        Auth::login($modelInstance);
 
         return redirect(config('quick-login.redirect_url'));
     }
 
-    public function createUser(Request $request): RedirectResponse
+    public function createUser(): RedirectResponse
     {
-        $model = config('quick-login.model')::factory()->create();
+        if (! class_exists($modelClass = config('quick-login.model'))) {
+            throw new UnknownClassException($modelClass);
+        }
 
-        Auth::login($model, true);
+        $modelInstance = $modelClass::factory()->create();
+
+        Auth::login($modelInstance);
 
         return redirect(config('quick-login.redirect_url'));
     }

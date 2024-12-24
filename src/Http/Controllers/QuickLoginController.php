@@ -2,11 +2,11 @@
 
 namespace GustavoVasquez\LaravelQuickLogin\Http\Controllers;
 
+use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use PHPUnit\Framework\MockObject\Generator\UnknownClassException;
 
 class QuickLoginController
 {
@@ -15,7 +15,7 @@ class QuickLoginController
         // Check target class existance
 
         if (! class_exists($modelClass = config('quick-login.model'))) {
-            throw new UnknownClassException($modelClass);
+            throw new DomainException($modelClass);
         }
 
         // Validation
@@ -44,7 +44,7 @@ class QuickLoginController
     public function createUser(): RedirectResponse
     {
         if (! class_exists($modelClass = config('quick-login.model'))) {
-            throw new UnknownClassException($modelClass);
+            throw new DomainException($modelClass);
         }
 
         $modelInstance = $modelClass::factory()->create();

@@ -2,10 +2,10 @@
 
 namespace GustavoVasquez\LaravelQuickLogin\Components;
 
+use DomainException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 use Illuminate\View\View;
-use PHPUnit\Framework\MockObject\Generator\UnknownClassException;
 
 class QuickLoginForm extends Component
 {
@@ -16,7 +16,7 @@ class QuickLoginForm extends Component
     public function __construct()
     {
         if (! class_exists($modelClass = config('quick-login.model'))) {
-            throw new UnknownClassException($modelClass);
+            throw new DomainException($modelClass);
         }
 
         $this->primaryKey = config('quick-login.model_primary_key');

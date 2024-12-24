@@ -2,6 +2,8 @@
 
 // config for GustavoVasquez/LaravelQuickLogin
 return [
+    'environments' => explode(',', env('QUICK_LOGIN_ENVIRONMENTS', 'local')),
+
     'model' => \App\Models\User::class,
 
     'model_primary_key' => 'id',

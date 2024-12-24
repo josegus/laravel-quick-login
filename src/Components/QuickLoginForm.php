@@ -30,4 +30,9 @@ class QuickLoginForm extends Component
     {
         return view('josegus::components.quick-login-form');
     }
+
+    public function shouldRender(): bool
+    {
+        return in_array(config('app.env'), config('quick-login.environments'));
+    }
 }

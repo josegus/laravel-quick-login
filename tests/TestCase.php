@@ -2,19 +2,18 @@
 
 namespace GustavoVasquez\LaravelQuickLogin\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 use GustavoVasquez\LaravelQuickLogin\LaravelQuickLoginServiceProvider;
+use GustavoVasquez\LaravelQuickLogin\Tests\Models\User;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 
 class TestCase extends Orchestra
 {
+    use InteractsWithViews;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'GustavoVasquez\\LaravelQuickLogin\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
     }
 
     protected function getPackageProviders($app)
@@ -24,13 +23,26 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_laravel-quick-login_table.php.stub';
-        $migration->up();
-        */
+        $app['config']->set('quick-login.model', User::class);
+    }
+
+    public function migrate()
+    {
+        $migrations = [
+            Migrations\UsersMigration::class,
+        ];
+
+        foreach ($migrations as $migration) {
+            (new $migration)->up();
+        }
     }
 }

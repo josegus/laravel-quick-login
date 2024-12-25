@@ -2,21 +2,29 @@
 
 namespace GustavoVasquez\LaravelQuickLogin\Tests;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 use GustavoVasquez\LaravelQuickLogin\LaravelQuickLoginServiceProvider;
-use GustavoVasquez\LaravelQuickLogin\Tests\Models\User;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 
-class TestCase extends Orchestra
+abstract class TestCase extends Orchestra
 {
+    use WithWorkbench;
+    use RefreshDatabase;
     use InteractsWithViews;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->migrate();
+        Factory::guessFactoryNamesUsing(function ($factory) {
+            $factoryBasename = class_basename($factory);
+
+            return "Database\Factories\\$factoryBasename".'Factory';
+        });
     }
 
     protected function getPackageProviders($app)
@@ -37,18 +45,7 @@ class TestCase extends Orchestra
                 'prefix'   => '',
             ]);
 
-            $config->set('quick-login.model', User::class);
+            $config->set('quick-login.model', \Workbench\App\Models\User::class);
         });
-    }
-
-    protected function migrate(): void
-    {
-        $migrations = [
-            Migrations\UsersMigration::class,
-        ];
-
-        foreach ($migrations as $migration) {
-            (new $migration)->up();
-        }
     }
 }

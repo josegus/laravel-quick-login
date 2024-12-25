@@ -5,6 +5,7 @@ namespace GustavoVasquez\LaravelQuickLogin\Tests;
 use Orchestra\Testbench\TestCase as Orchestra;
 use GustavoVasquez\LaravelQuickLogin\LaravelQuickLoginServiceProvider;
 use GustavoVasquez\LaravelQuickLogin\Tests\Models\User;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 
 class TestCase extends Orchestra
@@ -14,6 +15,8 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->migrate();
     }
 
     protected function getPackageProviders($app)
@@ -23,19 +26,22 @@ class TestCase extends Orchestra
         ];
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function defineEnvironment($app)
     {
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('database.connections.testing', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        // Setup default database to use sqlite :memory:
+        tap($app['config'], function (Repository $config) {
+            $config->set('database.default', 'testbench');
+            $config->set('database.connections.testbench', [
+                'driver'   => 'sqlite',
+                'database' => ':memory:',
+                'prefix'   => '',
+            ]);
 
-        $app['config']->set('quick-login.model', User::class);
+            $config->set('quick-login.model', User::class);
+        });
     }
 
-    public function migrate()
+    protected function migrate(): void
     {
         $migrations = [
             Migrations\UsersMigration::class,

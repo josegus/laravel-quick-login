@@ -4,6 +4,7 @@ namespace Workbench\App\Providers;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
+use Workbench\App\Models\User;
 
 class WorkbenchServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,7 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Set user model
+        $this->app['config']->set('quick-login.model', User::class);
     }
 }

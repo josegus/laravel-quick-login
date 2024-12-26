@@ -45,7 +45,7 @@ abstract class TestCase extends Orchestra
                 'prefix'   => '',
             ]);
 
-            $config->set('quick-login.model', \Workbench\App\Models\User::class);
+            //$config->set('quick-login.model', \Workbench\App\Models\User::class);
         });
     }
 }

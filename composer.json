@@ -34,8 +34,8 @@
         "psr-4": {
             "GustavoVasquez\\LaravelQuickLogin\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
-            "Database\\Factories\\": "workbench/database/factories/",
-            "Database\\Seeders\\": "workbench/database/seeders/"
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "scripts": {

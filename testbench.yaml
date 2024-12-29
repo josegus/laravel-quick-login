@@ -1,0 +1,30 @@
+#laravel: '@testbench'
+
+providers:
+  - Workbench\App\Providers\WorkbenchServiceProvider
+
+migrations:
+  - workbench/database/migrations
+
+seeders:
+  - Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: '/'
+  welcome: true
+  install: false
+  discovers:
+    web: true
+    components: true
+    views: true
+  build:
+    #- asset-publish
+    - create-sqlite-db
+    - db-wipe
+    - migrate-fresh
+  # assets:
+  #   - laravel-assets
+  # sync:
+  #   - from: storage
+  #     to: workbench/storage
+  #     reverse: true

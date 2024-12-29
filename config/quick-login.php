@@ -10,5 +10,5 @@ return [
 
     'model_displayed_attribute' => 'email',
 
-    'redirect_url' => env('QUICK_LOGIN_REDIRECT_URL', 'dashboard'),
+    'redirect_to' => env('QUICK_LOGIN_REDIRECT_TO', 'dashboard'),
 ];

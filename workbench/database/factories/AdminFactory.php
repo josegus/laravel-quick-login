@@ -1,17 +1,17 @@
 <?php
 
-namespace Database\Factories;
+namespace Workbench\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Workbench\App\Models\User;
+use Workbench\App\Models\Admin;
 
 /**
- * @template TModel of \Workbench\App\Models\User
+ * @template TModel of \Workbench\App\Models\Admin
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */
-class UserFactory extends Factory
+class AdminFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -23,7 +23,7 @@ class UserFactory extends Factory
      *
      * @var class-string<TModel>
      */
-    protected $model = User::class;
+    protected $model = Admin::class;
 
     /**
      * Define the model's default state.
@@ -33,8 +33,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'username' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
         ];
     }

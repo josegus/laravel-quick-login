@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories;
+namespace Workbench\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Workbench\App\Models\Customer;
 
 /**
- * @template TModel of \Workbench\App\Models\Customer
+ * @template TModel of \Workbench\App\Models\User
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */
@@ -33,7 +33,8 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => fake()->unique()->userName(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
         ];
     }

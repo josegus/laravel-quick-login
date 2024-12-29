@@ -38,12 +38,14 @@ class QuickLoginController
 
         Auth::login($modelInstance);
 
-        return redirect(config('quick-login.redirect_url'));
+        return redirect($request->post('redirect_to') ?? config('quick-login.redirect_to'));
     }
 
-    public function createUser(): RedirectResponse
+    public function createUser(Request $request): RedirectResponse
     {
-        if (! class_exists($modelClass = config('quick-login.model'))) {
+        $modelClass = $request->post('model_class') ?? config('quick-login.model');
+
+        if (! class_exists($modelClass)) {
             throw new DomainException($modelClass);
         }
 
@@ -51,6 +53,6 @@ class QuickLoginController
 
         Auth::login($modelInstance);
 
-        return redirect(config('quick-login.redirect_url'));
+        return redirect($request->post('redirect_to') ?? config('quick-login.redirect_to'));
     }
 }

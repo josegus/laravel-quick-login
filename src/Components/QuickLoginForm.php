@@ -9,21 +9,25 @@ use Illuminate\View\View;
 
 class QuickLoginForm extends Component
 {
-    public ?Collection $users = null;
+    public ?string $modelClass = null;
     public ?string $primaryKey = null;
     public ?string $displayedAttribute = null;
+    public ?string $redirectTo = null;
+    public ?Collection $users = null;
 
-    public function __construct()
+    public function __construct(?string $modelClass = null, ?string $primaryKey = null, ?string $displayedAttribute = null, ?string $redirectTo = null)
     {
-        if (! class_exists($modelClass = config('quick-login.model'))) {
-            throw new DomainException($modelClass);
+        if (! class_exists($this->modelClass = $modelClass ?? config('quick-login.model'))) {
+            throw new DomainException($this->modelClass);
         }
 
-        $this->primaryKey = config('quick-login.model_primary_key');
+        $this->primaryKey = $primaryKey ?? config('quick-login.model_primary_key');
 
-        $this->displayedAttribute = config('quick-login.model_displayed_attribute');
+        $this->displayedAttribute = $displayedAttribute ?? config('quick-login.model_displayed_attribute');
 
-        $this->users = $modelClass::select([$this->primaryKey, $this->displayedAttribute])->get();
+        $this->redirectTo = $redirectTo ?? config('quick-login.redirect_to');
+
+        $this->users = $this->modelClass::select([$this->primaryKey, $this->displayedAttribute])->get();
     }
 
     public function render(): View

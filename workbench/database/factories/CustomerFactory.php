@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Workbench\App\Models\Customer;
 
 /**
- * @template TModel of \Workbench\App\Models\User
+ * @template TModel of \Workbench\App\Models\Customer
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */
@@ -33,8 +33,7 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'username' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
         ];
     }

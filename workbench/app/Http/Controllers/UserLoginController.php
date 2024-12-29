@@ -1,22 +1,22 @@
 <?php
 
-namespace Workbench\App\Http\Controllers\Customer;
+namespace Workbench\App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Orchestra\Workbench\Http\Requests\Auth\LoginRequest;
 
-class LoginController
+class UserLoginController
 {
     public function create(): View
     {
-        dd(config('auth'));
-        return view('customer.login');
+        return view('user-login');
     }
 
     public function store(LoginRequest $request): RedirectResponse
     {
+        dd('UserLoginController@store');
         /* if (! Auth::guard('customer')->attempt($request->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 

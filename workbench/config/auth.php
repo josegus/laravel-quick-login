@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'customer',
+        'guard' => 'web',
     ],
 
     /*
@@ -35,14 +35,13 @@ return [
     */
 
     'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
         'customer' => [
             'driver' => 'session',
             'provider' => 'customers',
-        ],
-
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admins',
         ],
     ],
 
@@ -64,14 +63,14 @@ return [
     */
 
     'providers' => [
-        'customers' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => Workbench\App\Models\User::class,
         ],
 
-        'admins' => [
+        'customers' => [
             'driver' => 'eloquent',
-            'model' => Workbench\App\Models\Admin::class,
+            'model' => Workbench\App\Models\Customer::class,
         ],
     ],
 ];

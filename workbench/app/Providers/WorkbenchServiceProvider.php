@@ -4,7 +4,6 @@ namespace Workbench\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Workbench\App\Models\Customer;
 use Workbench\App\Models\User;
 use Workbench\App\View\Components\AppLayout;
 use Workbench\App\View\Components\GuestLayout;
@@ -35,7 +34,7 @@ class WorkbenchServiceProvider extends ServiceProvider
         Blade::component('guest-layout', GuestLayout::class);
 
         // Set user model
-        $this->app['config']->set('quick-login.model', Customer::class);
+        $this->app['config']->set('quick-login.model', User::class);
 
         $this->replaceConfigRecursivelyFrom(workbench_path('config/auth.php'), 'auth');
     }

@@ -2,6 +2,7 @@
 
 providers:
   - Workbench\App\Providers\WorkbenchServiceProvider
+  - GustavoVasquez\LaravelQuickLogin\LaravelQuickLoginServiceProvider
 
 migrations:
   - workbench/database/migrations

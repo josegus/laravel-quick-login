@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout background-color="bg-gray-100">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

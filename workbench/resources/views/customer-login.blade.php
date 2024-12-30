@@ -1,8 +1,8 @@
-<x-guest-layout>
+<x-guest-layout background-color="bg-sky-100">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="text-right italic">Admin Login</div>
+    <div class="text-right italic">Customer Login</div>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -49,10 +49,11 @@
 
     <div class="mt-8">
         <x-josegus-quick-login-form
-            :model-class="\Workbench\App\Models\Admin::class"
+            :model="\Workbench\App\Models\Customer::class"
+            guard="customer"
             primary-key="uuid"
             displayed-attribute="username"
-            redirect-to="admin/dashboard"
+            redirect-to="customers/dashboard"
         />
     </div>
 </x-guest-layout>

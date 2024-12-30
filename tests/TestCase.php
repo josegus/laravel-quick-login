@@ -2,38 +2,28 @@
 
 namespace GustavoVasquez\LaravelQuickLogin\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use GustavoVasquez\LaravelQuickLogin\LaravelQuickLoginServiceProvider;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Workbench\App\Models\Customer;
 
 abstract class TestCase extends Orchestra
 {
-    use WithWorkbench;
-    use RefreshDatabase;
-    use InteractsWithViews;
+    use WithWorkbench, RefreshDatabase, InteractsWithViews;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    // Environments & Configuraiton hooks
 
-        Factory::guessFactoryNamesUsing(function ($factory) {
-            $factoryBasename = class_basename($factory);
-
-            return "Database\Factories\\$factoryBasename".'Factory';
-        });
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [
-            LaravelQuickLoginServiceProvider::class,
-        ];
-    }
-
+    /**
+     * Here we define config options early in the bootstrapping process (between
+     * registering service providers and booting service providers).
+     *
+     * @link https://packages.tools/testbench/the-basic/environment.html#defineenvironment-method
+     *
+     * @param \Illuminate\Foundation\Application $app
+     * @return void
+     */
     protected function defineEnvironment($app)
     {
         // Setup default database to use sqlite :memory:
@@ -44,8 +34,19 @@ abstract class TestCase extends Orchestra
                 'database' => ':memory:',
                 'prefix'   => '',
             ]);
+        });
+    }
 
-            //$config->set('quick-login.model', \Workbench\App\Models\User::class);
+    protected function usesCustomModelConvention(array $override = []): void
+    {
+        tap($this->app['config'], function (Repository $config) use ($override) {
+            $config->set('quick-login', array_merge([
+                'model' => Customer::class,
+                'guard' => 'customer',
+                'primary_key' => 'uuid',
+                'displayed_attribute' => 'username',
+                'redirect_to' => 'customers/dashboard',
+            ], $override));
         });
     }
 }

@@ -14,44 +14,42 @@ class QuickLoginController
     {
         // Check target class existance
 
-        if (! class_exists($modelClass = config('quick-login.model'))) {
-            throw new DomainException($modelClass);
+        if (! class_exists($model = config('quick-login.model'))) {
+            throw new DomainException($model);
         }
 
         // Validation
 
-        $validated = validator(
-            data: $request->only('model'),
+        $validated = $request->validate(
             rules: [
-                'model' => [
+                'selected-model' => [
                     'required',
-                    Rule::exists($modelClass, $key = config('quick-login.model_primary_key'))
+                    Rule::exists($model, $key = config('quick-login.primary_key'))
             ]],
             messages: [
-                'model.exists' => "User with primary key [{$key}] not found."
-            ]
-        )->validate();
+                'selected-model.exists' => "User with primary key [{$key}] not found."
+            ]);
 
         // Login attempt
 
-        $modelInstance = $modelClass::findOrFail($validated['model']);
+        $modelInstance = $model::findOrFail($validated['selected-model']);
 
-        Auth::login($modelInstance);
+        Auth::guard($request->post('guard') ?? config('quick-login.guard'))->login($modelInstance);
 
         return redirect($request->post('redirect_to') ?? config('quick-login.redirect_to'));
     }
 
     public function createUser(Request $request): RedirectResponse
     {
-        $modelClass = $request->post('model_class') ?? config('quick-login.model');
+        $model = $request->post('model') ?? config('quick-login.model');
 
-        if (! class_exists($modelClass)) {
-            throw new DomainException($modelClass);
+        if (! class_exists($model)) {
+            throw new DomainException($model);
         }
 
-        $modelInstance = $modelClass::factory()->create();
+        $modelInstance = $model::factory()->create();
 
-        Auth::login($modelInstance);
+        Auth::guard($request->post('guard') ?? config('quick-login.guard'))->login($modelInstance);
 
         return redirect($request->post('redirect_to') ?? config('quick-login.redirect_to'));
     }

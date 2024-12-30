@@ -13,18 +13,18 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [UserLoginController::class, 'store'])->name('login');
 
     // Customer
-    Route::get('customer/login', [CustomerLoginController::class, 'create']);
-    Route::post('customer/login', [CustomerLoginController::class, 'store'])->name('customer.login');
+    Route::get('customers/login', [CustomerLoginController::class, 'create']);
+    Route::post('customers/login', [CustomerLoginController::class, 'store'])->name('customer.login');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:web,customer')->group(function () {
     Route::post('logout', LogoutController::class)->name('logout');
 
     // User
     Route::get('dashboard', UserDashboardController::class);
 
     // Customer
-    Route::get('customer/dashboard', CustomerDashboardController::class);
+    Route::get('customers/dashboard', CustomerDashboardController::class);
 });
 
 // dev

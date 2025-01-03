@@ -2,9 +2,11 @@
     "name": "josegus/laravel-quick-login",
     "description": "Quick auth & login",
     "keywords": [
-        "GustavoVasquez",
         "laravel",
-        "laravel-quick-login"
+        "laravel-quick-login",
+        "login",
+        "authentication",
+        "impersonate"
     ],
     "homepage": "https://github.com/josegus/laravel-quick-login",
     "license": "MIT",
@@ -61,20 +63,13 @@
         ]
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "laravel": {
             "providers": [
                 "GustavoVasquez\\LaravelQuickLogin\\LaravelQuickLoginServiceProvider"
-            ],
-            "aliases": {
-                "LaravelQuickLogin": "GustavoVasquez\\LaravelQuickLogin\\Facades\\LaravelQuickLogin"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

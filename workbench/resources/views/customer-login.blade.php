@@ -48,7 +48,7 @@
     </form>
 
     <div class="mt-8">
-        <x-josegus-quick-login-form
+        <x-josegus::quick-login-form
             :model="\Workbench\App\Models\Customer::class"
             guard="customer"
             primary-key="uuid"

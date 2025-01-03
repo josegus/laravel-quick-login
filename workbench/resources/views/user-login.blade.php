@@ -48,6 +48,6 @@
     </form>
 
     <div class="mt-8">
-        <x-josegus-quick-login-form />
+        <x-josegus::quick-login-form />
     </div>
 </x-guest-layout>

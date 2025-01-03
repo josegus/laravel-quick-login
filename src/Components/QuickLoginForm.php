@@ -3,7 +3,6 @@
 namespace GustavoVasquez\LaravelQuickLogin\Components;
 
 use DomainException;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 

@@ -12,9 +12,9 @@
         @endforeach
     </select>
 
-    @error ('selected-model')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
+    @isset ($errors)
+        <span class="text-red-500 text-sm">{{ $errors->first('selected-model') }}</span>
+    @endisset
 </form>
 
 <form action="{{ route('quick-login.create-user') }}" method="post" class="mt-2 text-right">

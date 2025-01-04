@@ -47,7 +47,13 @@ class QuickLoginController
             throw new DomainException($model);
         }
 
-        $modelInstance = $model::factory()->create();
+        $modelFactory = $model::factory();
+
+        foreach ($request->post('factory_states') ?? [] as $state) {
+            $modelFactory = $modelFactory->$state();
+        }
+
+        $modelInstance = $modelFactory->create();
 
         Auth::guard($request->post('guard') ?? config('quick-login.guard'))->login($modelInstance);
 

@@ -88,4 +88,12 @@ class QuickLoginFormComponentTest extends TestCase
                 '<option value="' . $customer2->uuid . '">' . $customer2->username . '</option>',
             ], false);
     }
+
+    #[Test]
+    public function component_accepts_an_array_of_factory_states(): void
+    {
+        $this->component(QuickLoginForm::class, ['factoryStates' => ['isForeign', 'withCompany']])
+            ->assertSee('<input type="text" class="hidden" name="factory_states[]" value="isForeign">', false)
+            ->assertSee('<input type="text" class="hidden" name="factory_states[]" value="withCompany">', false);
+    }
 }

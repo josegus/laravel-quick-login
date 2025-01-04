@@ -48,6 +48,12 @@
     </form>
 
     <div class="mt-8">
+        Without factory states
         <x-josegus::quick-login-form />
+    </div>
+
+    <div class="mt-8">
+        With factory states <pre>['isForeign', 'withCompany']</pre>
+        <x-josegus::quick-login-form :factory-states="['isForeign', 'withCompany']" />
     </div>
 </x-guest-layout>

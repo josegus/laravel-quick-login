@@ -38,4 +38,23 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
         ];
     }
+
+    // states
+
+    public function isForeign(): self
+    {
+        return $this->state([
+            'is_foreign' => true,
+            'country' => $this->faker->country(),
+            'city' => $this->faker->city(),
+        ]);
+    }
+
+    public function withCompany(): self
+    {
+        return $this->state([
+            'company_name' => $this->faker->company(),
+            'company_address' => $this->faker->address(),
+        ]);
+    }
 }

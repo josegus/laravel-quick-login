@@ -29,6 +29,24 @@ class LoginTest extends TestCase
     }
 
     #[Test]
+    public function it_accepts_an_array_of_factory_states_as_part_of_the_custom_parameters(): void
+    {
+        $this->post(route('quick-login.create-user'), [
+            'factory_states' => ['isForeign', 'withCompany']
+        ])->assertValid();
+
+        $this->assertAuthenticated();
+
+        $this->assertTrue(User::whereNotNull([
+            'is_foreign',
+            'country',
+            'city',
+            'company_name',
+            'company_address',
+        ])->exists());
+    }
+
+    #[Test]
     public function it_validates_and_prevents_authentication_when_using_a_custom_model_with_the_wrong_keys(): void
     {
         // Passing wrong key on purpose, to make it fail

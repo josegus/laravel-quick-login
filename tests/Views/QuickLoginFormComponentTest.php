@@ -64,7 +64,7 @@ class QuickLoginFormComponentTest extends TestCase
     }
 
     #[Test]
-    public function it_display_users_with_default_primary_key_and_displayed_attribute(): void
+    public function it_displays_users_with_default_primary_key_and_displayed_attribute(): void
     {
         [$user1, $user2] = User::factory()->count(2)->create();
 
@@ -74,7 +74,7 @@ class QuickLoginFormComponentTest extends TestCase
     }
 
     #[Test]
-    public function it_display_users_with_custom_primary_key_and_displayed_attribute(): void
+    public function it_displays_users_with_custom_primary_key_and_displayed_attribute(): void
     {
         [$customer1, $customer2] = Customer::factory()->count(2)->create();
 

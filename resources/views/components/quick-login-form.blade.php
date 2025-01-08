@@ -1,4 +1,4 @@
-<form action="{{ route('quick-login.login-as') }}" method="post">
+<form action="{{ route('quick-login.as-existing-user') }}" method="post">
     @csrf
 
     <input type="text" class="hidden" name="model" value="{{ $model }}">
@@ -17,7 +17,7 @@
     @endisset
 </form>
 
-<form action="{{ route('quick-login.create-user') }}" method="post" class="mt-2 text-right">
+<form action="{{ route('quick-login.as-new-user') }}" method="post" class="mt-2 text-right">
     @csrf
 
     <input type="text" class="hidden" name="model" value="{{ $model }}">

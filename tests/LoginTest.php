@@ -14,7 +14,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create();
 
         $this
-            ->post(route('quick-login.login-as'), ['selected-model' => $user->id])
+            ->post(route('quick-login.as-existing-user'), ['selected-model' => $user->id])
             ->assertValid();
 
         $this->assertAuthenticatedAs($user);
@@ -23,7 +23,7 @@ class LoginTest extends TestCase
     #[Test]
     public function it_creates_and_authenticates_a_new_user(): void
     {
-        $this->post(route('quick-login.create-user'));
+        $this->post(route('quick-login.as-new-user'));
 
         $this->assertAuthenticated();
     }
@@ -31,7 +31,7 @@ class LoginTest extends TestCase
     #[Test]
     public function it_accepts_an_array_of_factory_states_as_part_of_the_custom_parameters(): void
     {
-        $this->post(route('quick-login.create-user'), [
+        $this->post(route('quick-login.as-new-user'), [
             'factory_states' => ['isForeign', 'withCompany']
         ])->assertValid();
 
@@ -49,7 +49,7 @@ class LoginTest extends TestCase
     #[Test]
     public function it_accepts_an_array_of_model_attributes_as_part_of_the_custom_parameters(): void
     {
-        $this->post(route('quick-login.create-user'), [
+        $this->post(route('quick-login.as-new-user'), [
             'model_attributes' => json_encode(['is_foreign' => true, 'company_name' => 'Laravel'])
         ])->assertValid();
 
@@ -69,7 +69,7 @@ class LoginTest extends TestCase
 
         $customer = Customer::factory()->create();
 
-        $this->post(route('quick-login.login-as'), ['selected-model' => $customer->uuid])
+        $this->post(route('quick-login.as-existing-user'), ['selected-model' => $customer->uuid])
             ->assertInvalid([
                 'selected-model' => "User with primary key [{$key}] not found."
             ]);
@@ -84,7 +84,7 @@ class LoginTest extends TestCase
 
         $customer = Customer::factory()->create();
 
-        $this->post(route('quick-login.login-as'), ['selected-model' => $customer->uuid])
+        $this->post(route('quick-login.as-existing-user'), ['selected-model' => $customer->uuid])
             ->assertValid();
 
         $this->assertAuthenticatedAs($customer, 'customer');

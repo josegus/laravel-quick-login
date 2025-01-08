@@ -14,6 +14,7 @@ class QuickLoginForm extends Component
     public ?string $displayedAttribute = null;
     public ?string $redirectTo = null;
     public ?array $factoryStates = null;
+    public ?array $modelAttributes = null;
 
     public function __construct(
         ?string $model = null,
@@ -21,7 +22,8 @@ class QuickLoginForm extends Component
         ?string $primaryKey = null,
         ?string $displayedAttribute = null,
         ?string $redirectTo = null,
-        ?array $factoryStates = null
+        ?array $factoryStates = null,
+        ?array $modelAttributes = null
     ) {
         if (! class_exists($this->model = $model ?? config('quick-login.model'))) {
             throw new DomainException($this->model);
@@ -36,6 +38,8 @@ class QuickLoginForm extends Component
         $this->redirectTo = $redirectTo ?? config('quick-login.redirect_to');
 
         $this->factoryStates = $factoryStates;
+
+        $this->modelAttributes = $modelAttributes;
     }
 
     public function render(): View

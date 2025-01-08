@@ -47,6 +47,21 @@ class LoginTest extends TestCase
     }
 
     #[Test]
+    public function it_accepts_an_array_of_model_attributes_as_part_of_the_custom_parameters(): void
+    {
+        $this->post(route('quick-login.create-user'), [
+            'model_attributes' => json_encode(['is_foreign' => true, 'company_name' => 'Laravel'])
+        ])->assertValid();
+
+        $this->assertAuthenticated();
+
+        $this->assertDatabaseHas(User::class, [
+            'is_foreign' => true,
+            'company_name' => 'Laravel'
+        ]);
+    }
+
+    #[Test]
     public function it_validates_and_prevents_authentication_when_using_a_custom_model_with_the_wrong_keys(): void
     {
         // Passing wrong key on purpose, to make it fail

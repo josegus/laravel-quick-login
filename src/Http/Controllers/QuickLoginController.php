@@ -6,6 +6,7 @@ use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Js;
 use Illuminate\Validation\Rule;
 
 class QuickLoginController
@@ -53,7 +54,9 @@ class QuickLoginController
             $modelFactory = $modelFactory->$state();
         }
 
-        $modelInstance = $modelFactory->create();
+        $modelAttributes = json_decode($request->post('model_attributes'), true);
+
+        $modelInstance = $modelFactory->create($modelAttributes);
 
         Auth::guard($request->post('guard') ?? config('quick-login.guard'))->login($modelInstance);
 

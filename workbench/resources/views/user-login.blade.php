@@ -48,12 +48,21 @@
     </form>
 
     <div class="mt-8">
-        Without factory states
+        Default config
         <x-josegus::quick-login-form />
     </div>
 
     <div class="mt-8">
-        With factory states <pre>['isForeign', 'withCompany']</pre>
-        <x-josegus::quick-login-form :factory-states="['isForeign', 'withCompany']" />
+        With factory states <pre class="text-xs rounded bg-gray-500 p-2 text-white">['isForeign', 'withCompany']</pre>
+        <x-josegus::quick-login-form
+            :factory-states="['isForeign', 'withCompany']"
+        />
+    </div>
+
+    <div class="mt-8">
+        With model attributes <pre class="text-xs rounded bg-gray-500 p-2 text-white">['is_foreign' => true, 'company_name' => 'Laravel']</pre>
+        <x-josegus::quick-login-form
+            :model-attributes="['is_foreign' => true, 'company_name' => 'Laravel']"
+        />
     </div>
 </x-guest-layout>

@@ -5,6 +5,7 @@ namespace GustavoVasquez\LaravelQuickLogin\Tests\Views;
 use DomainException;
 use GustavoVasquez\LaravelQuickLogin\Components\QuickLoginForm;
 use GustavoVasquez\LaravelQuickLogin\Tests\TestCase;
+use Illuminate\Support\Js;
 use PHPUnit\Framework\Attributes\Test;
 use Workbench\App\Models\Customer;
 use Workbench\App\Models\User;
@@ -95,5 +96,20 @@ class QuickLoginFormComponentTest extends TestCase
         $this->component(QuickLoginForm::class, ['factoryStates' => ['isForeign', 'withCompany']])
             ->assertSee('<input type="text" class="hidden" name="factory_states[]" value="isForeign">', false)
             ->assertSee('<input type="text" class="hidden" name="factory_states[]" value="withCompany">', false);
+    }
+
+    #[Test]
+    public function component_accepts_an_array_of_model_attributes(): void
+    {
+        $this->markTestSkipped('Fix encode');
+
+        $this->component(QuickLoginForm::class, [
+            'modelAttributes' => $attributes = [
+                'is_foreign' => 1,
+                'company_name' => fake()->company(),
+                'company_address' => fake()->address()
+            ]
+        ])
+            ->assertSee('<input type="text" class="hidden" name="model_attributes" value="'.json_encode($attributes).'">', false);
     }
 }

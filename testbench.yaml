@@ -11,7 +11,7 @@ seeders:
   - Database\Seeders\DatabaseSeeder
 
 workbench:
-  start: '/'
+  start: '/login'
   welcome: true
   install: false
   discovers:

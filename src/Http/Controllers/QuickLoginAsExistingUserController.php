@@ -13,8 +13,9 @@ class QuickLoginAsExistingUserController
     public function __invoke(Request $request): RedirectResponse
     {
         // Check target class existance
+        $model = $request->post('model') ?? config('quick-login.model');
 
-        if (! class_exists($model = config('quick-login.model'))) {
+        if (! class_exists($model)) {
             throw new DomainException($model);
         }
 
@@ -22,17 +23,17 @@ class QuickLoginAsExistingUserController
 
         $validated = $request->validate(
             rules: [
-                'selected-model' => [
+                'selected_model' => [
                     'required',
-                    Rule::exists($model, $key = config('quick-login.primary_key'))
+                    Rule::exists($model, $key = $request->post('primary_key') ?? config('quick-login.primary_key'))
             ]],
             messages: [
-                'selected-model.exists' => "User with primary key [{$key}] not found."
+                'selected_model.exists' => "User with primary key [{$key}] not found."
             ]);
 
         // Login attempt
 
-        $modelInstance = $model::findOrFail($validated['selected-model']);
+        $modelInstance = $model::findOrFail($validated['selected_model']);
 
         Auth::guard($request->post('guard') ?? config('quick-login.guard'))->login($modelInstance);
 

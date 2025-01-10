@@ -7,8 +7,6 @@ return [
 
     'guard' => 'web',
 
-    'primary_key' => 'id',
-
     'displayed_attribute' => 'email',
 
     'redirect_to' => env('QUICK_LOGIN_REDIRECT_TO', 'dashboard'),

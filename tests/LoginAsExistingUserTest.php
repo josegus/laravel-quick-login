@@ -24,17 +24,14 @@ class LoginAsExistingUserTest extends TestCase
     // With custom config values
 
     #[Test]
-    public function it_validates_and_prevents_authentication_when_using_a_custom_model_with_the_wrong_keys(): void
+    public function it_prevents_authentication_when_using_a_custom_model_with_the_wrong_keys(): void
     {
         // Passing wrong key on purpose, to make it fail
-        $this->usesCustomModelConvention(['primary_key' => $key = 'id']);
+        $this->usesCustomModelConvention();
 
-        $customer = Customer::factory()->create();
+        Customer::factory()->create();
 
-        $this->post(route('quick-login.as-existing-user'), ['selected_model' => $customer->uuid])
-            ->assertInvalid([
-                'selected_model' => "User with primary key [{$key}] not found."
-            ]);
+        $this->post(route('quick-login.as-existing-user'), ['selected_model' => 'invalid']);
 
         $this->assertGuest();
     }
@@ -46,7 +43,7 @@ class LoginAsExistingUserTest extends TestCase
 
         $customer = Customer::factory()->create();
 
-        $this->post(route('quick-login.as-existing-user'), ['selected_model' => $customer->uuid])
+        $this->post(route('quick-login.as-existing-user'), ['selected_model' => $customer->getKey()])
             ->assertValid();
 
         $this->assertAuthenticatedAs($customer, 'customer');
@@ -63,7 +60,6 @@ class LoginAsExistingUserTest extends TestCase
             'selected_model' => $customer->getKey(),
             'model' => Customer::class,
             'guard' => 'customer',
-            'primary_key' => 'uuid',
             'redirect_to' => 'custom'
         ])->assertRedirect('custom');
 

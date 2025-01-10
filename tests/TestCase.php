@@ -37,16 +37,15 @@ abstract class TestCase extends Orchestra
         });
     }
 
-    protected function usesCustomModelConvention(array $override = []): void
+    protected function usesCustomModelConvention(): void
     {
-        tap($this->app['config'], function (Repository $config) use ($override) {
-            $config->set('quick-login', array_merge([
+        tap($this->app['config'], function (Repository $config) {
+            $config->set('quick-login', [
                 'model' => Customer::class,
                 'guard' => 'customer',
-                'primary_key' => 'uuid',
                 'displayed_attribute' => 'username',
                 'redirect_to' => 'customers/dashboard',
-            ], $override));
+            ]);
         });
     }
 }

@@ -10,7 +10,6 @@ class QuickLoginForm extends Component
 {
     public ?string $model = null;
     public ?string $guard = null;
-    public ?string $primaryKey = null;
     public ?string $displayedAttribute = null;
     public ?string $redirectTo = null;
     public ?array $factoryStates = null;
@@ -19,7 +18,6 @@ class QuickLoginForm extends Component
     public function __construct(
         ?string $model = null,
         ?string $guard = null,
-        ?string $primaryKey = null,
         ?string $displayedAttribute = null,
         ?string $redirectTo = null,
         ?array $factoryStates = null,
@@ -30,8 +28,6 @@ class QuickLoginForm extends Component
         }
 
         $this->guard = $guard ?? config('quick-login.guard');
-
-        $this->primaryKey = $primaryKey ?? config('quick-login.primary_key');
 
         $this->displayedAttribute = $displayedAttribute ?? config('quick-login.displayed_attribute');
 
@@ -45,7 +41,7 @@ class QuickLoginForm extends Component
     public function render(): View
     {
         return view('josegus::components.quick-login-form', [
-            'users' => $this->model::select([$this->primaryKey, $this->displayedAttribute])->get()
+            'users' => $this->model::select([(new $this->model)->getKeyName(), $this->displayedAttribute])->get()
         ]);
     }
 

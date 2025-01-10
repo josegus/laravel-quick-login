@@ -26,7 +26,6 @@ class LoginAsNewUserTest extends TestCase
         $this->post(route('quick-login.as-new-user'), [
             'model' => Customer::class,
             'guard' => 'customer',
-            'primary_key' => 'uuid',
             'redirect_to' => 'custom'
         ])->assertValid()
         ->assertRedirect('custom');

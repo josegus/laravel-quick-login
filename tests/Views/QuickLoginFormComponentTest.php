@@ -5,7 +5,6 @@ namespace GustavoVasquez\LaravelQuickLogin\Tests\Views;
 use DomainException;
 use GustavoVasquez\LaravelQuickLogin\Components\QuickLoginForm;
 use GustavoVasquez\LaravelQuickLogin\Tests\TestCase;
-use Illuminate\Support\Js;
 use PHPUnit\Framework\Attributes\Test;
 use Workbench\App\Models\Customer;
 use Workbench\App\Models\User;
@@ -81,7 +80,6 @@ class QuickLoginFormComponentTest extends TestCase
 
         $this->component(QuickLoginForm::class, [
             'model' => Customer::class,
-            'primaryKey' => 'uuid',
             'displayedAttribute' => 'username',
         ])
             ->assertSeeInOrder([

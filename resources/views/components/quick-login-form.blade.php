@@ -8,7 +8,7 @@
     <select onchange="this.closest('form').submit()" name="selected_model" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">
         <option>-- Select --</option>
         @foreach ($users as $user)
-            <option value="{{ $user->{$primaryKey} }}">{{ $user->{$displayedAttribute} }}</option>
+            <option value="{{ $user->{$user->getKeyName()} }}">{{ $user->{$displayedAttribute} }}</option>
         @endforeach
     </select>
 

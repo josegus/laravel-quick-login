@@ -36,9 +36,4 @@ class QuickLoginForm extends Component
             'users' => $this->model::select([(new $this->model)->getKeyName(), $this->displayedAttribute])->get()
         ]);
     }
-
-    public function shouldRender(): bool
-    {
-        return in_array(config('app.env'), config('quick-login.environments'));
-    }
 }

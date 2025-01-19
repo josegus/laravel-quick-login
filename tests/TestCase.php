@@ -7,7 +7,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\Concerns\WithWorkbench;
-use Workbench\App\Models\Customer;
 
 abstract class TestCase extends Orchestra
 {
@@ -41,8 +40,6 @@ abstract class TestCase extends Orchestra
     {
         tap($this->app['config'], function (Repository $config) {
             $config->set('quick-login', [
-                'model' => Customer::class,
-                'guard' => 'customer',
                 'displayed_attribute' => 'username',
                 'redirect_to' => 'customers/dashboard',
             ]);

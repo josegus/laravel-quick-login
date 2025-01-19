@@ -3,6 +3,7 @@
 namespace GustavoVasquez\LaravelQuickLogin\Http\Controllers;
 
 use DomainException;
+use GustavoVasquez\LaravelQuickLogin\Helpers\QuickLogin;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,9 @@ class QuickLoginAsNewUserController
 {
     public function __invoke(Request $request): RedirectResponse
     {
-        $model = $request->post('model') ?? config('quick-login.model');
+        $quick = new QuickLogin($request);
+
+        $model = $quick->model();
 
         if (! class_exists($model)) {
             throw new DomainException($model);
@@ -19,16 +22,14 @@ class QuickLoginAsNewUserController
 
         $modelFactory = $model::factory();
 
-        foreach ($request->post('factory_states') ?? [] as $state) {
+        foreach ($quick->factoryStates() as $state) {
             $modelFactory = $modelFactory->$state();
         }
 
-        $modelAttributes = json_decode($request->post('model_attributes'), true);
+        $modelInstance = $modelFactory->create($quick->modelAttributes());
 
-        $modelInstance = $modelFactory->create($modelAttributes);
+        Auth::guard($quick->guard())->login($modelInstance);
 
-        Auth::guard($request->post('guard') ?? config('quick-login.guard'))->login($modelInstance);
-
-        return redirect($request->post('redirect_to') ?? config('quick-login.redirect_to'));
+        return redirect($quick->redirectTo());
     }
 }

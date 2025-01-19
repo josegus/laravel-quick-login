@@ -2,7 +2,6 @@
 
 namespace GustavoVasquez\LaravelQuickLogin\Components;
 
-use DomainException;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -23,18 +22,11 @@ class QuickLoginForm extends Component
         ?array $factoryStates = null,
         ?array $modelAttributes = null
     ) {
-        if (! class_exists($this->model = $model ?? config('quick-login.model'))) {
-            throw new DomainException($this->model);
-        }
-
-        $this->guard = $guard ?? config('quick-login.guard');
-
+        $this->model = $model ?? config('quick-login.model') ?? config('auth.providers.users.model');
+        $this->guard = $guard;
         $this->displayedAttribute = $displayedAttribute ?? config('quick-login.displayed_attribute');
-
-        $this->redirectTo = $redirectTo ?? config('quick-login.redirect_to');
-
+        $this->redirectTo = $redirectTo;
         $this->factoryStates = $factoryStates;
-
         $this->modelAttributes = $modelAttributes;
     }
 

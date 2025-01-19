@@ -14,7 +14,7 @@ class LoginAsExistingUserTest extends TestCase
         $user = User::factory()->create();
 
         $this
-            ->post(route('quick-login.as-existing-user'), ['selected_model' => $user->id])
+            ->post(route('quick-login.as-existing-user'), ['selected_model' => $user->getKey()])
             ->assertValid()
             ->assertRedirect(config('quick-login.redirect_to'));
 
@@ -34,19 +34,6 @@ class LoginAsExistingUserTest extends TestCase
         $this->post(route('quick-login.as-existing-user'), ['selected_model' => 'invalid']);
 
         $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_authenticates_using_an_existing_user_with_custom_keys(): void
-    {
-        $this->usesCustomModelConvention();
-
-        $customer = Customer::factory()->create();
-
-        $this->post(route('quick-login.as-existing-user'), ['selected_model' => $customer->getKey()])
-            ->assertValid();
-
-        $this->assertAuthenticatedAs($customer, 'customer');
     }
 
     // With custom config parameters

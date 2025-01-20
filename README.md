@@ -1,19 +1,15 @@
-# Quick auth & login
+# Laravel Quick Login
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/josegus/laravel-quick-login.svg?style=flat-square)](https://packagist.org/packages/josegus/laravel-quick-login)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/josegus/laravel-quick-login/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/josegus/laravel-quick-login/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/josegus/laravel-quick-login/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/josegus/laravel-quick-login/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/josegus/laravel-quick-login.svg?style=flat-square)](https://packagist.org/packages/josegus/laravel-quick-login)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A simple Laravel component that enables quick login functionality for development environments.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-quick-login.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-quick-login)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+In short, it includes a blade component that you can include in your login view to:
+- create new users and automatically log in as the created user, with one click
+- select an existing user to log in, with one click
 
 ## Installation
 
@@ -23,37 +19,83 @@ You can install the package via composer:
 composer require josegus/laravel-quick-login
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="laravel-quick-login-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-quick-login-config"
+php artisan vendor:publish --tag="quick-login-config"
 ```
 
-This is the contents of the published config file:
+
+This will create the `config/quick-login.php` file with the following options:
+
 
 ```php
 return [
+    'model' => \App\Models\User::class,
+
+    'displayed_attribute' => 'email',
+
+    'redirect_to' => env('QUICK_LOGIN_REDIRECT_TO', 'dashboard'),
 ];
 ```
 
 Optionally, you can publish the views using
 
 ```bash
-php artisan vendor:publish --tag="laravel-quick-login-views"
+php artisan vendor:publish --tag="quick-login-views"
 ```
 
 ## Usage
 
+### Blade Component
+
+The package includes a Blade component that you can use in any view:
+
+```blade
+<x-josegus::quick-login-form />
+```
+
+The above code will use Laravel's default authentication model (`App\Models\User`) and guard (`web`).
+
+### Using a different guard
+
+If your app uses a different guard, pass it as a parameter to the component:
+
+```blade
+<x-josegus::quick-login-form guard="customer" />
+```
+
+### Using factory states
+
+To create new users, the package will use the factory defined in your auth model, so make sure your auth model uses the `HasFactory` trait. You can pass an array of factory states that will be applied when the package creates new users:
+
+```blade
+<x-josegus::quick-login-form
+    :factory-states="['isForeign', 'withCompany']"
+/>
+```
+
+### Using extra model attributes
+
+Alternatively, you can pass an array of properties that will be applied when the package creates new users:
+
+```blade
+<x-josegus::quick-login-form
+    :model-attributes="['is_foreign' => true, 'company_name' => 'Laravel']"
+/>
+```
+
+## Advanced Customization
+
+### Change the Displayed Attribute
+
+By default, the user's email is displayed. You can change this in the configuration:
+
 ```php
-$laravelQuickLogin = new GustavoVasquez\LaravelQuickLogin();
-echo $laravelQuickLogin->echoPhrase('Hello, GustavoVasquez!');
+// config/quick-login.php
+return [
+    'displayed_attribute' => 'username',
+];
 ```
 
 ## Testing
@@ -62,23 +104,10 @@ echo $laravelQuickLogin->echoPhrase('Hello, GustavoVasquez!');
 composer test
 ```
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Gustavo Vasquez](https://github.com/josegus)
-- [All Contributors](../../contributors)
-
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+This package is open-source software licensed under the MIT license.
+
+## Security
+
+⚠️ **Warning**: This package is designed for development environments only. It is not recommended for use in production.

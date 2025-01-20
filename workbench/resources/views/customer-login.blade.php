@@ -51,7 +51,6 @@
         <x-josegus::quick-login-form
             :model="\Workbench\App\Models\Customer::class"
             guard="customer"
-            primary-key="uuid"
             displayed-attribute="username"
             redirect-to="customers/dashboard"
         />

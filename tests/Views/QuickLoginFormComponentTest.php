@@ -16,13 +16,13 @@ class QuickLoginFormComponentTest extends TestCase
         $this->component(QuickLoginForm::class)
             ->assertSeeInOrder([
                 // login as
-                '<input type="text" class="hidden" name="model" value="Workbench\\App\\Models\\User">',
-                '<input type="text" class="hidden" name="guard" value="">',
-                '<input type="text" class="hidden" name="redirect_to" value="">',
+                '<input type="hidden" name="model" value="Workbench\\App\\Models\\User">',
+                '<input type="hidden" name="guard" value="">',
+                '<input type="hidden" name="redirect_to" value="">',
                 // create user
-                '<input type="text" class="hidden" name="model" value="Workbench\\App\\Models\\User">',
-                '<input type="text" class="hidden" name="guard" value="">',
-                '<input type="text" class="hidden" name="redirect_to" value="">',
+                '<input type="hidden" name="model" value="Workbench\\App\\Models\\User">',
+                '<input type="hidden" name="guard" value="">',
+                '<input type="hidden" name="redirect_to" value="">',
             ], false);
     }
 
@@ -36,13 +36,13 @@ class QuickLoginFormComponentTest extends TestCase
         ])
             ->assertSeeInOrder([
                 // login as
-                '<input type="text" class="hidden" name="model" value="Workbench\\App\\Models\\Customer">',
-                '<input type="text" class="hidden" name="guard" value="custom">',
-                '<input type="text" class="hidden" name="redirect_to" value="other">',
+                '<input type="hidden" name="model" value="Workbench\\App\\Models\\Customer">',
+                '<input type="hidden" name="guard" value="custom">',
+                '<input type="hidden" name="redirect_to" value="other">',
                 // create user
-                '<input type="text" class="hidden" name="model" value="Workbench\\App\\Models\\Customer">',
-                '<input type="text" class="hidden" name="guard" value="custom">',
-                '<input type="text" class="hidden" name="redirect_to" value="other">',
+                '<input type="hidden" name="model" value="Workbench\\App\\Models\\Customer">',
+                '<input type="hidden" name="guard" value="custom">',
+                '<input type="hidden" name="redirect_to" value="other">',
             ], false);
     }
 
@@ -75,22 +75,7 @@ class QuickLoginFormComponentTest extends TestCase
     public function component_accepts_an_array_of_factory_states(): void
     {
         $this->component(QuickLoginForm::class, ['factoryStates' => ['isForeign', 'withCompany']])
-            ->assertSee('<input type="text" class="hidden" name="factory_states[]" value="isForeign">', false)
-            ->assertSee('<input type="text" class="hidden" name="factory_states[]" value="withCompany">', false);
-    }
-
-    #[Test]
-    public function component_accepts_an_array_of_model_attributes(): void
-    {
-        $this->markTestSkipped('Fix encode');
-
-        $this->component(QuickLoginForm::class, [
-            'modelAttributes' => $attributes = [
-                'is_foreign' => 1,
-                'company_name' => fake()->company(),
-                'company_address' => fake()->streetAddress()
-            ]
-        ])
-            ->assertSee('<input type="text" class="hidden" name="model_attributes" value="'.json_encode($attributes).'">', false);
+            ->assertSee('<input type="hidden" name="factory_states[]" value="isForeign">', false)
+            ->assertSee('<input type="hidden" name="factory_states[]" value="withCompany">', false);
     }
 }

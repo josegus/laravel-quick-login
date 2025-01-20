@@ -1,5 +1,4 @@
 # Composer Related
-composer.lock
 /vendor
 
 # Frontend Assets
@@ -25,7 +24,6 @@ _ide_helper_models.php
 /.vscode
 
 # Misc
-phpunit.xml
 phpstan.neon
 /docs
 /coverage
